@@ -4,49 +4,80 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import EventCard from "../components/EventCard"
 import Countdown from "../components/Countdown"
-import { mockEvents, mockArtists } from "../data/mockData"
+import axios from "axios"
 import "./Home.css"
+
+// Define mockArtists for now
+const mockArtists = [
+  {
+    id: 1,
+    name: "Artist 1",
+    genre: "Rock",
+    social: {
+      spotify: "https://spotify.com/artist1",
+      instagram: "https://instagram.com/artist1",
+      youtube: "https://youtube.com/artist1"
+    }
+  },
+  {
+    id: 2,
+    name: "Artist 2",
+    genre: "Jazz",
+    social: {
+      spotify: "https://spotify.com/artist2",
+      instagram: "https://instagram.com/artist2",
+      youtube: "https://youtube.com/artist2"
+    }
+  },
+  // Add more artists as needed
+];
 
 const Home = () => {
   const [featuredEvents, setFeaturedEvents] = useState([])
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [pastEvents, setPastEvents] = useState([])
   const [nextEvent, setNextEvent] = useState(null)
-  const [featuredArtists, setFeaturedArtists] = useState([])
+  const [featuredArtists, setFeaturedArtists] = useState([]) // For artists
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [subscribeMessage, setSubscribeMessage] = useState("")
 
   useEffect(() => {
-    // Simulate API calls
-    const loadData = () => {
-      // Get current date for comparison
-      const now = new Date()
+    // Fetch events from the backend API
+    axios
+      .get("http://localhost:8080/api/events")
+      .then((response) => {
+        const events = response.data;  // Assuming the API returns an array of events
 
-      // Filter events
-      const upcoming = mockEvents
-        .filter((event) => new Date(event.date) > now)
-        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        // Get current date for comparison
+        const now = new Date()
 
-      const past = mockEvents
-        .filter((event) => new Date(event.date) < now)
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        // Filter events into upcoming and past
+        const upcoming = events
+          .filter((event) => new Date(event.date) > now)
+          .sort((a, b) => new Date(a.date) - new Date(b.date)) // Sort by date ascending
 
-      // Set next event (closest upcoming)
-      setNextEvent(upcoming.length > 0 ? upcoming[0] : null)
+        const past = events
+          .filter((event) => new Date(event.date) < now)
+          .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date descending
 
-      // Set featured events (random selection)
-      const featured = [...mockEvents].sort(() => 0.5 - Math.random()).slice(0, 3)
+        // Set next event (closest upcoming)
+        setNextEvent(upcoming.length > 0 ? upcoming[0] : null)
 
-      setFeaturedEvents(featured)
-      setUpcomingEvents(upcoming.slice(0, 6))
-      setPastEvents(past.slice(0, 3))
+        // Set featured events (random selection)
+        const featured = events.filter(event => event.featured) // Filter featured events
+        setFeaturedEvents(featured.slice(0, 3)) // Get the first 3 featured events
 
-      // Set featured artists
-      setFeaturedArtists(mockArtists.slice(0, 4))
-    }
+        // Set upcoming and past events
+        setUpcomingEvents(upcoming.slice(0, 6)) // Show up to 6 upcoming events
+        setPastEvents(past.slice(0, 3)) // Show up to 3 past events
+      })
+      .catch((error) => {
+        console.error("Error fetching events:", error)
+      })
 
-    loadData()
+    // Use the mock artists for now
+    setFeaturedArtists(mockArtists)
   }, [])
 
   const handleSubscribe = (e) => {
@@ -67,7 +98,7 @@ const Home = () => {
   }
 
   return (
-<div className="home-page">
+    <div className="home-page">
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
@@ -135,43 +166,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="section how-it-works-section">
-        <div className="container">
-          <h2 className="section-title">How It Works</h2>
-          <div className="steps-container">
-            <div className="step">
-              <div className="step-icon">
-                <i className="fas fa-search"></i>
-              </div>
-              <h3>Discover</h3>
-              <p>Find amazing music events happening near you</p>
-            </div>
-            <div className="step">
-              <div className="step-icon">
-                <i className="fas fa-ticket-alt"></i>
-              </div>
-              <h3>Book</h3>
-              <p>Secure your tickets with our easy booking system</p>
-            </div>
-            <div className="step">
-              <div className="step-icon">
-                <i className="fas fa-music"></i>
-              </div>
-              <h3>Experience</h3>
-              <p>Enjoy the event and create lasting memories</p>
-            </div>
-            <div className="step">
-              <div className="step-icon">
-                <i className="fas fa-star"></i>
-              </div>
-              <h3>Share</h3>
-              <p>Rate the event and share your experience</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Upcoming Events */}
       <section className="section upcoming-events-section">
         <div className="container">
@@ -190,7 +184,7 @@ const Home = () => {
       </section>
 
       {/* Featured Artists */}
-      <section className="section featured-artists-section">
+      {/* <section className="section featured-artists-section">
         <div className="container">
           <h2 className="section-title">Featured Artists</h2>
           <div className="grid grid-4">
@@ -216,7 +210,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Past Events */}
       <section className="section past-events-section">
@@ -258,78 +252,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section testimonials-section">
-        <div className="container">
-          <h2 className="section-title">What Our Customers Say</h2>
-          <div className="testimonials-container">
-            <div className="testimonial">
-              <div className="testimonial-content">
-                <p>
-                  "RhythmEvents made it so easy to find and book tickets for my favorite band. The process was seamless
-                  and the event was amazing!"
-                </p>
-              </div>
-              <div className="testimonial-author">
-                <img src="/src/Assests/back 3.jpg" alt="Sarah Johnson" />
-                <div>
-                  <h4>Sarah Johnson</h4>
-                  <div className="testimonial-rating">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="testimonial">
-              <div className="testimonial-content">
-                <p>
-                  "I've been to several events organized by RhythmEvents and each one has been better than the last.
-                  Their attention to detail is impressive!"
-                </p>
-              </div>
-              <div className="testimonial-author">
-                <img src="/src/Assests/back 3.jpg" alt="Michael Chen" />
-                <div>
-                  <h4>Michael Chen</h4>
-                  <div className="testimonial-rating">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="testimonial">
-              <div className="testimonial-content">
-                <p>
-                  "The team at RhythmEvents are true professionals. They helped me plan a corporate event that exceeded
-                  all expectations!"
-                </p>
-              </div>
-              <div className="testimonial-author">
-                <img src="/src/Assests/back 3.jpg" alt="Emily Rodriguez" />
-                <div>
-                  <h4>Emily Rodriguez</h4>
-                  <div className="testimonial-rating">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star-half-alt"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Newsletter */}
       <section className="section newsletter-section">
         <div className="container">
@@ -364,4 +286,3 @@ const Home = () => {
 }
 
 export default Home
-
