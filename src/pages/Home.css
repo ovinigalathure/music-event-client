@@ -1,0 +1,460 @@
+/* Hero Section */
+.hero-section {
+  background-image: url('/src/Assests/back 16.jpg');
+  height: 112vh;
+  min-height: 600px;
+  /* background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/placeholder.svg?height=1080&width=1920")
+  no-repeat center center / cover; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+  margin-top: -80px;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Countdown Section */
+.countdown-section {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 40px 0;
+}
+
+.countdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.countdown-info {
+  text-align: center;
+}
+
+.countdown-info h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.countdown-info h3 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.countdown-info p {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.countdown-info .btn {
+  margin-top: 20px;
+  background-color: white;
+  color: var(--primary-color);
+}
+
+.countdown-info .btn:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+/* Featured Events Section */
+.featured-events-section {
+  background-color: var(--background-color);
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  background-color: var(--card-bg);
+}
+
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.step {
+  text-align: center;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.step:hover {
+  transform: translateY(-10px);
+}
+
+.step-icon {
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+}
+
+.step h3 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+/* Upcoming Events Section */
+.upcoming-events-section {
+  background-color: var(--background-color);
+}
+
+/* Featured Artists Section */
+.featured-artists-section {
+  background-color: var(--card-bg);
+}
+
+.artist-card {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  text-align: center;
+}
+
+.artist-card:hover {
+  transform: translateY(-10px);
+}
+
+.artist-image {
+  height: 250px;
+  overflow: hidden;
+}
+
+.artist-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.artist-card:hover .artist-image img {
+  transform: scale(1.1);
+}
+
+.artist-card h3 {
+  margin: 15px 0 5px;
+  font-size: 1.2rem;
+}
+
+.artist-card p {
+  color: var(--text-light);
+  margin-bottom: 15px;
+}
+
+.artist-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding-bottom: 20px;
+}
+
+.artist-social a {
+  color: var(--text-light);
+  font-size: 1.2rem;
+  transition: var(--transition);
+}
+
+.artist-social a:hover {
+  color: var(--primary-color);
+}
+
+/* Past Events Section */
+.past-events-section {
+  background-color: var(--background-color);
+}
+
+.past-event-card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.past-event-card:hover {
+  transform: translateY(-10px);
+}
+
+.past-event-image {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.past-event-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.past-event-card:hover .past-event-image img {
+  transform: scale(1.1);
+}
+
+.past-event-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.past-event-card:hover .past-event-overlay {
+  opacity: 1;
+}
+
+.view-details {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.view-details:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.past-event-content {
+  padding: 20px;
+}
+
+.past-event-content h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.past-event-date,
+.past-event-venue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-light);
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background-color: var(--card-bg);
+}
+
+.testimonials-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.testimonial {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 30px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.testimonial:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial-content {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.testimonial-content p {
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.testimonial-content p::before,
+.testimonial-content p::after {
+  content: '"';
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.testimonial-author img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.testimonial-author h4 {
+  margin-bottom: 5px;
+}
+
+.testimonial-rating {
+  color: #ffc107;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+  background-color: var(--background-color);
+}
+
+.newsletter-container {
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius);
+  padding: 40px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.newsletter-content {
+  margin-bottom: 30px;
+}
+
+.newsletter-content h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.newsletter-form {
+  width: 100%;
+  max-width: 500px;
+}
+
+.newsletter-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.newsletter-form .form-input {
+  border: none;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 15px;
+}
+
+.newsletter-form .btn {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.newsletter-form .btn:hover {
+  background-color: white;
+  color: var(--primary-color);
+}
+
+.subscribe-message {
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .hero-content h1 {
+    font-size: 4rem;
+  }
+
+  .countdown-wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .countdown-info {
+    text-align: left;
+  }
+
+  .countdown-info p {
+    justify-content: flex-start;
+  }
+
+  .steps-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .testimonials-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .newsletter-form .form-group {
+    flex-direction: row;
+  }
+
+  .newsletter-form .form-input {
+    flex: 1;
+    margin-bottom: 0;
+    margin-right: 15px;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+  }
+
+  .newsletter-form .btn {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .steps-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .testimonials-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+

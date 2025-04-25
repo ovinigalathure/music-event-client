@@ -1,0 +1,23 @@
+.admin-layout {
+    display: flex;
+  }
+  
+  .admin-main-content {
+    margin-left: 250px; /* Sidebar width */
+    padding: 20px;
+    width: calc(100% - 250px); /* Take full width minus sidebar */
+  }
+  
+  .admin-header {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .admin-content {
+    padding: 20px;
+  }
+  
+  .admin-header h1 {
+    font-size: 2rem;
+  }
+  

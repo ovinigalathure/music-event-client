@@ -1,0 +1,44 @@
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.countdown-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.countdown-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (min-width: 768px) {
+  .countdown {
+    gap: 30px;
+  }
+
+  .countdown-item {
+    min-width: 100px;
+  }
+
+  .countdown-value {
+    font-size: 3.5rem;
+  }
+
+  .countdown-label {
+    font-size: 1rem;
+  }
+}
+
