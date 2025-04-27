@@ -137,7 +137,7 @@ const EventDetails = () => {
   const totalPrice = (event.price * ticketQuantity).toFixed(2)
   const serviceFee = (event.price * 0.1 * ticketQuantity).toFixed(2)
   const grandTotal = (Number(totalPrice) + Number(serviceFee)).toFixed(2)
-
+  const uploadsBase = "http://localhost:8080/uploads/";
   return (
     <div className="event-details-page">
       <div className="event-header">
@@ -169,18 +169,33 @@ const EventDetails = () => {
           <div className="event-main">
             <div className="event-gallery">
               <div className="event-main-image">
-                <img src={activeImage || "/placeholder.svg"} alt={event.name} />
+              
+                <img
+                  src={
+                    event.imagePath
+                      ? `${uploadsBase}${event.imagePath}`
+                      : "/placeholder.svg"
+                  }
+                  alt={event.name}
+                />
+
               </div>
               <div className="event-thumbnails">
-                {[event.image, ...(event.gallery || [])].map((image, index) => (
-                  <div
-                    key={index}
-                    className={`event-thumbnail ${activeImage === image ? "active" : ""}`}
-                    onClick={() => handleImageClick(image)}
-                  >
-                    <img src={image} alt={`${event.name} - ${index + 1}`} />
-                  </div>
-                ))}
+              {[event.image, ...(event.gallery || [])]
+  .filter(Boolean)
+  .map((imageFilename, index) => (
+    <div
+      key={index}
+      className={`event-thumbnail ${activeImage === imageFilename ? "active" : ""}`}
+      onClick={() => handleImageClick(imageFilename)}
+    >
+      <img
+        src={`${uploadsBase}${imageFilename}`}
+        alt={`${event.name} - ${index + 1}`}
+        style={{ width: 60, height: 60, objectFit: "cover" }}
+      />
+    </div>
+))}
               </div>
             </div>
 

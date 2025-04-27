@@ -23,34 +23,48 @@ const Contact = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.message) {
-      setFormError("Please fill in all required fields")
+    // Validation
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setFormError("Please fill in all required fields (*)")
       return
     }
 
-    // In a real app, you would send this data to your backend
-    console.log("Form submitted:", formData)
-
-    // Show success message
-    setFormError("")
-    setFormSubmitted(true)
-
-    // Reset form after 5 seconds
-    setTimeout(() => {
-      setFormSubmitted(false)
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
-        eventType: "",
+    try {
+      const response = await fetch("http://localhost:8080/api/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       })
-    }, 5000)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      setFormError("")
+      setFormSubmitted(true)
+
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setFormSubmitted(false)
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+          eventType: "",
+        })
+      }, 3000)
+
+    } catch (error) {
+      console.error("Submission error:", error)
+      setFormError("Failed to send message. Please try again later.")
+    }
   }
 
   return (

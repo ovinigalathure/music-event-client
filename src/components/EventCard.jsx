@@ -13,11 +13,20 @@ const EventCard = ({ event }) => {
     hour: "2-digit",
     minute: "2-digit",
   })
-
+  const uploadsBase = "http://localhost:8080/uploads/";
   return (
     <div className="event-card">
       <div className="event-image">
-        <img src={event.image || "/placeholder.svg"} alt={event.name} />
+      
+      <img
+        src={
+          event.imagePath
+            ? `${uploadsBase}${event.imagePath}`
+            : "/placeholder.svg"
+        }
+        alt={event.name}
+      />
+
         <div className="event-date-badge">
           <span className="event-month">{eventDate.toLocaleDateString("en-US", { month: "short" })}</span>
           <span className="event-day">{eventDate.getDate()}</span>

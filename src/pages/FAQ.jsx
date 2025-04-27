@@ -14,6 +14,7 @@ const FAQ = () => {
     message: "",
   })
   const [formSubmitted, setFormSubmitted] = useState(false)
+  const [formError, setFormError] = useState(null)
 
   const toggleFAQ = (index) => {
     setActiveIndex(activeIndex === index ? null : index)
@@ -31,24 +32,33 @@ const FAQ = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // In a real app, you would send this data to your backend
-    console.log("Form submitted:", contactForm)
-
-    // Show success message
-    setFormSubmitted(true)
-
-    // Reset form after 5 seconds
-    setTimeout(() => {
-      setFormSubmitted(false)
-      setContactForm({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
+    setFormError(null)
+    try {
+      const response = await fetch("http://localhost:8080/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactForm),
       })
-    }, 5000)
+      if (!response.ok) {
+        throw new Error("Failed to submit form. Please try again later.")
+      }
+      setFormSubmitted(true)
+      setTimeout(() => {
+        setFormSubmitted(false)
+        setContactForm({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        })
+      }, 5000)
+    } catch (error) {
+      setFormError(error.message)
+    }
   }
 
   const filteredFAQs = mockFAQs.filter(
@@ -199,6 +209,12 @@ const FAQ = () => {
                       required
                     ></textarea>
                   </div>
+                  {formError && (
+                    <div className="form-error-message">
+                      <i className="fas fa-exclamation-circle"></i>
+                      <p>{formError}</p>
+                    </div>
+                  )}
                   <button type="submit" className="btn">
                     Send Message
                   </button>
@@ -213,4 +229,3 @@ const FAQ = () => {
 }
 
 export default FAQ
-
