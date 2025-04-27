@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { mockVenues } from "../data/mockData"
 import "./Venues.css"
 
 const Venues = () => {
@@ -10,15 +9,27 @@ const Venues = () => {
   const [filteredVenues, setFilteredVenues] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    // Simulate API call
-    const fetchVenues = () => {
-      setTimeout(() => {
-        setVenues(mockVenues)
-        setFilteredVenues(mockVenues)
+    // Real API call to Spring Boot backend
+    const fetchVenues = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/venues")
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch venues: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        setVenues(data)
+        setFilteredVenues(data)
         setLoading(false)
-      }, 800)
+      } catch (error) {
+        console.error("Error fetching venues:", error)
+        setError(error.message)
+        setLoading(false)
+      }
     }
 
     fetchVenues()
@@ -30,7 +41,8 @@ const Venues = () => {
       const filtered = venues.filter(
         (venue) =>
           venue.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          venue.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          venue.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          venue.state.toLowerCase().includes(searchTerm.toLowerCase()) ||
           venue.description.toLowerCase().includes(searchTerm.toLowerCase()),
       )
       setFilteredVenues(filtered)
@@ -48,6 +60,18 @@ const Venues = () => {
       <div className="loading-container">
         <div className="loading-spinner"></div>
         <p>Loading venues...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <h3>Error Loading Venues</h3>
+        <p>{error}</p>
+        <button className="btn" onClick={() => window.location.reload()}>
+          Try Again
+        </button>
       </div>
     )
   }
@@ -81,7 +105,7 @@ const Venues = () => {
               {filteredVenues.map((venue) => (
                 <div key={venue.id} className="venue-card">
                   <div className="venue-image">
-                    <img src={venue.image || "/placeholder.svg"} alt={venue.name} />
+                    <img src={venue.imageUrl || "/placeholder.svg"} alt={venue.name} />
                     <div className="venue-capacity">
                       <i className="fas fa-users"></i> {venue.capacity.toLocaleString()} capacity
                     </div>
@@ -89,7 +113,7 @@ const Venues = () => {
                   <div className="venue-content">
                     <h3>{venue.name}</h3>
                     <p className="venue-location">
-                      <i className="fas fa-map-marker-alt"></i> {venue.location}
+                      <i className="fas fa-map-marker-alt"></i> {venue.city}, {venue.state}
                     </p>
                     <p className="venue-description">{venue.description.substring(0, 100)}...</p>
                     <div className="venue-amenities">
@@ -140,4 +164,3 @@ const Venues = () => {
 }
 
 export default Venues
-
