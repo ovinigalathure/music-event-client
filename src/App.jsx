@@ -28,6 +28,7 @@ import { NotificationProvider } from "./context/NotificationContext"
 import ProtectedRoute from "./components/ProtectedRoute"
 import AdminRoute from "./components/AdminRoute"
 import "./App.css"
+import BookingConfirmation from "./pages/BookingConfirmation"
 
 
 
@@ -75,6 +76,7 @@ function App() {
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/confirmation/:id" element={<BookingConfirmation />} />
                   <Route
                     path="/profile/*"
                     element={

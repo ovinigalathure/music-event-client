@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams, Link } from "react-router-dom"
-import { mockEvents, mockArtists } from "../data/mockData"
+import { useParams, Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 import Countdown from "../components/Countdown"
 import { useAuth } from "../context/AuthContext"
 import { useNotification } from "../context/NotificationContext"
@@ -18,32 +18,35 @@ const EventDetails = () => {
   const [activeImage, setActiveImage] = useState("")
   const { user } = useAuth()
   const { addNotification } = useNotification()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    // Simulate API call
-    const fetchEvent = () => {
-      setTimeout(() => {
-        const foundEvent = mockEvents.find((e) => e.id === id)
+    const fetchEventData = async () => {
+      setLoading(true)
+      try {
+        // Fetch event details
+        const eventResponse = await axios.get(`http://localhost:8080/api/events/${id}`)
+        const eventData = eventResponse.data
+        setEvent(eventData)
+        setActiveImage(eventData.image)
 
-        if (foundEvent) {
-          setEvent(foundEvent)
-          setActiveImage(foundEvent.image)
-
-          // Get artists for this event
-          if (foundEvent.artists && foundEvent.artists.length > 0) {
-            const artists = mockArtists.filter((artist) => foundEvent.artists.includes(artist.id))
-            setEventArtists(artists)
-          }
+        // Fetch associated artists if available
+        if (eventData.artists?.length > 0) {
+          const artistsResponse = await axios.get(
+            `http://localhost:8080/api/artists?ids=${eventData.artists.join(",")}`
+          )
+          setEventArtists(artistsResponse.data)
         }
-
+      } catch (error) {
+        console.error("Error fetching event details:", error)
+        setEvent(null)
+      } finally {
         setLoading(false)
-      }, 800)
+        window.scrollTo(0, 0)
+      }
     }
 
-    fetchEvent()
-
-    // Scroll to top when component mounts
-    window.scrollTo(0, 0)
+    fetchEventData()
   }, [id])
 
   const handleTabChange = (tab) => {
@@ -51,8 +54,7 @@ const EventDetails = () => {
   }
 
   const handleQuantityChange = (e) => {
-    const value = Number.parseInt(e.target.value)
-    setTicketQuantity(value)
+    setTicketQuantity(Number.parseInt(e.target.value))
   }
 
   const handleImageClick = (image) => {
@@ -61,45 +63,42 @@ const EventDetails = () => {
 
   const handleBookTicket = async () => {
     if (!user) {
-      // Redirect to login if not logged in
-      window.location.href = `/login?redirect=/events/${id}`;
-      return;
+      window.location.href = `/login?redirect=/events/${id}`
+      return
     }
-  
+
+    const price = event.price
+    const totalPrice = (price * ticketQuantity).toFixed(2)
+    const serviceFee = (price * 0.1 * ticketQuantity).toFixed(2)
+    const grandTotal = (Number(totalPrice) + Number(serviceFee)).toFixed(2)
+
     try {
-      const response = await fetch("http://localhost:8080/api/tickets/book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          eventId: event.id,
-          quantity: ticketQuantity,
-          userId: user.id,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to book ticket");
-      }
-  
-      const data = await response.json();
-  
+      await axios.post("http://localhost:8080/api/tickets/book", {
+        eventId: event.id,
+        userId: user.id,
+        price: price,
+        quantity: ticketQuantity,
+        totalPrice: totalPrice,
+        serviceFee: serviceFee,
+        grandTotal: grandTotal,
+      })
+
       addNotification({
-        message: `You have successfully booked ${ticketQuantity} ticket(s) for "${event.name}"`,
-      });
-  
-      // Reset quantity
-      setTicketQuantity(1);
+        message: `Booked ${ticketQuantity} ticket(s) for "${event.name}"`,
+        type: "success"
+      })
+      
+      navigate(`/confirmation/${event.id}?quantity=${ticketQuantity}&totalPrice=${totalPrice}&serviceFee=${serviceFee}&grandTotal=${grandTotal}`)
+      setTicketQuantity(1)
     } catch (error) {
-      console.error("Booking failed:", error);
+      console.error("Booking failed:", error)
       addNotification({
-        message: "Booking failed. Please try again later.",
-        type: "error",
-      });
+        message: "Booking failed. Please try again.",
+        type: "error"
+      })
+      alert("Booking failed. Please try again.")
     }
-  };
-  
+  }
 
   if (loading) {
     return (
@@ -114,7 +113,7 @@ const EventDetails = () => {
     return (
       <div className="not-found-container">
         <h2>Event Not Found</h2>
-        <p>The event you're looking for doesn't exist or has been removed.</p>
+        <p>The requested event could not be found.</p>
         <Link to="/events" className="btn">
           Browse Events
         </Link>
@@ -137,7 +136,7 @@ const EventDetails = () => {
 
   const totalPrice = (event.price * ticketQuantity).toFixed(2)
   const serviceFee = (event.price * 0.1 * ticketQuantity).toFixed(2)
-  const grandTotal = (Number.parseFloat(totalPrice) + Number.parseFloat(serviceFee)).toFixed(2)
+  const grandTotal = (Number(totalPrice) + Number(serviceFee)).toFixed(2)
 
   return (
     <div className="event-details-page">
@@ -148,9 +147,7 @@ const EventDetails = () => {
             <div className="event-meta">
               <div className="event-meta-item">
                 <i className="fas fa-calendar-alt"></i>
-                <span>
-                  {formattedDate} at {formattedTime}
-                </span>
+                <span>{formattedDate} at {formattedTime}</span>
               </div>
               <div className="event-meta-item">
                 <i className="fas fa-map-marker-alt"></i>
@@ -159,7 +156,7 @@ const EventDetails = () => {
               <div className="event-meta-item">
                 <i className="fas fa-ticket-alt"></i>
                 <span>
-                  {event.tickets.sold} / {event.tickets.total} tickets sold
+                  {event.tickets?.sold} / {event.tickets?.total} tickets sold
                 </span>
               </div>
             </div>
@@ -175,13 +172,13 @@ const EventDetails = () => {
                 <img src={activeImage || "/placeholder.svg"} alt={event.name} />
               </div>
               <div className="event-thumbnails">
-                {[event.image, ...event.gallery].map((image, index) => (
+                {[event.image, ...(event.gallery || [])].map((image, index) => (
                   <div
                     key={index}
                     className={`event-thumbnail ${activeImage === image ? "active" : ""}`}
                     onClick={() => handleImageClick(image)}
                   >
-                    <img src={image || "/placeholder.svg"} alt={`${event.name} - ${index}`} />
+                    <img src={image} alt={`${event.name} - ${index + 1}`} />
                   </div>
                 ))}
               </div>
@@ -217,23 +214,6 @@ const EventDetails = () => {
                       <h3>Event Starts In</h3>
                       <Countdown targetDate={event.date} />
                     </div>
-                    <div className="event-share">
-                      <h3>Share This Event</h3>
-                      <div className="share-buttons">
-                        <a href="#" className="share-btn facebook">
-                          <i className="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" className="share-btn twitter">
-                          <i className="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" className="share-btn instagram">
-                          <i className="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" className="share-btn email">
-                          <i className="fas fa-envelope"></i>
-                        </a>
-                      </div>
-                    </div>
                   </div>
                 )}
                 {activeTab === "venue" && (
@@ -241,30 +221,7 @@ const EventDetails = () => {
                     <h2>Venue Information</h2>
                     <div className="venue-info">
                       <h3>{event.venue}</h3>
-                      <p>
-                        <i className="fas fa-map-marker-alt"></i> 123 Music Street, City, State
-                      </p>
-                      <div className="venue-map">
-                        <img src="/placeholder.svg?height=300&width=600" alt="Venue Map" />
-                      </div>
-                      <h3>Getting There</h3>
-                      <div className="transportation-options">
-                        <div className="transport-option">
-                          <i className="fas fa-car"></i>
-                          <h4>By Car</h4>
-                          <p>Parking available on-site for $15 per vehicle.</p>
-                        </div>
-                        <div className="transport-option">
-                          <i className="fas fa-subway"></i>
-                          <h4>Public Transit</h4>
-                          <p>Take the Blue Line to Music Station, 5-minute walk.</p>
-                        </div>
-                        <div className="transport-option">
-                          <i className="fas fa-bicycle"></i>
-                          <h4>Bicycle</h4>
-                          <p>Bike racks available at the north and south entrances.</p>
-                        </div>
-                      </div>
+                      <p>{event.venueAddress}</p>
                     </div>
                   </div>
                 )}
@@ -276,44 +233,18 @@ const EventDetails = () => {
                         {eventArtists.map((artist) => (
                           <div key={artist.id} className="artist-card">
                             <div className="artist-image">
-                              <img src={artist.image || "/placeholder.svg"} alt={artist.name} />
+                              <img src={artist.image} alt={artist.name} />
                             </div>
                             <div className="artist-info">
                               <h3>{artist.name}</h3>
                               <p className="artist-genre">{artist.genre}</p>
                               <p className="artist-bio">{artist.bio}</p>
-                              <div className="artist-social">
-                                <a
-                                  href={artist.social.spotify}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  aria-label="Spotify"
-                                >
-                                  <i className="fab fa-spotify"></i>
-                                </a>
-                                <a
-                                  href={artist.social.instagram}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  aria-label="Instagram"
-                                >
-                                  <i className="fab fa-instagram"></i>
-                                </a>
-                                <a
-                                  href={artist.social.youtube}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  aria-label="YouTube"
-                                >
-                                  <i className="fab fa-youtube"></i>
-                                </a>
-                              </div>
                             </div>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p>No artist information available for this event.</p>
+                      <p>No artist information available</p>
                     )}
                   </div>
                 )}
@@ -325,24 +256,20 @@ const EventDetails = () => {
             <div className="ticket-booking-card">
               <h2>Get Tickets</h2>
               <div className="ticket-price">
-                <span className="price-label">Price:</span>
-                <span className="price-value">${event.price.toFixed(2)}</span>
+                <span>Price:</span>
+                <span>${event.price?.toFixed(2)}</span>
               </div>
               <div className="ticket-quantity">
-                <label htmlFor="quantity">Quantity:</label>
-                <select id="quantity" value={ticketQuantity} onChange={handleQuantityChange}>
+                <label>Quantity:</label>
+                <select value={ticketQuantity} onChange={handleQuantityChange}>
                   {[...Array(10)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}
-                    </option>
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
                   ))}
                 </select>
               </div>
               <div className="ticket-summary">
                 <div className="summary-item">
-                  <span>
-                    Tickets ({ticketQuantity} x ${event.price.toFixed(2)})
-                  </span>
+                  <span>Tickets ({ticketQuantity}x)</span>
                   <span>${totalPrice}</span>
                 </div>
                 <div className="summary-item">
@@ -357,65 +284,12 @@ const EventDetails = () => {
               <button className="btn book-btn" onClick={handleBookTicket}>
                 Book Now
               </button>
-              <p className="ticket-note">
-                <i className="fas fa-info-circle"></i> Tickets are non-refundable but can be transferred.
-              </p>
-            </div>
-
-            <div className="event-organizer-card">
-              <h3>Event Organizer</h3>
-              <div className="organizer-info">
-                <img src="/placeholder.svg?height=50&width=50" alt="Organizer" />
-                <div>
-                  <h4>RhythmEvents</h4>
-                  <p>Organizing quality music events since 2010</p>
-                </div>
-              </div>
-              <a href="#" className="contact-organizer">
-                <i className="fas fa-envelope"></i> Contact Organizer
-              </a>
             </div>
           </div>
         </div>
       </div>
-
-      <section className="section similar-events-section">
-        <div className="container">
-          <h2 className="section-title">Similar Events You Might Like</h2>
-          <div className="similar-events">
-            {mockEvents
-              .filter((e) => e.id !== event.id && e.category === event.category)
-              .slice(0, 3)
-              .map((similarEvent) => (
-                <div key={similarEvent.id} className="similar-event-card">
-                  <div className="similar-event-image">
-                    <img src={similarEvent.image || "/placeholder.svg"} alt={similarEvent.name} />
-                  </div>
-                  <div className="similar-event-content">
-                    <h3>{similarEvent.name}</h3>
-                    <p className="similar-event-date">
-                      <i className="fas fa-calendar-alt"></i>
-                      {new Date(similarEvent.date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </p>
-                    <p className="similar-event-venue">
-                      <i className="fas fa-map-marker-alt"></i> {similarEvent.venue}
-                    </p>
-                    <Link to={`/events/${similarEvent.id}`} className="btn-small">
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
 
 export default EventDetails
-

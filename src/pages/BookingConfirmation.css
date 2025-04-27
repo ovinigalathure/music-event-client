@@ -1,0 +1,202 @@
+.booking-confirmation-page {
+    font-family: 'Arial', sans-serif;
+    padding: 40px 0;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    width: 1500px;
+  }
+  
+  .container {
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 40px;
+    background-color: #ffffffcc;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid #e1e8f0;
+  }
+  
+  .confirmation-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .confirmation-header h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #2c3e50;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .confirmation-header p {
+    font-size: 1.3rem;
+    color: #34495e;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  
+  .booking-details {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
+  
+  .ticket-info {
+    background-color: #ecf0f1;
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-left: 8px solid #27ae60;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  .ticket-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #27ae60;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .ticket-info p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #34495e;
+  }
+  
+  .ticket-info p strong {
+    font-weight: 700;
+    color: #2c3e50;
+  }
+  
+  .confirmation-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .btn {
+    padding: 14px 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.4s ease;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 6px 12px rgba(39, 174, 96, 0.5);
+  }
+  
+  .primary-btn {
+    background-color: #27ae60;
+  }
+  
+  .primary-btn:hover {
+    background-color: #219150;
+    box-shadow: 0 8px 20px rgba(33, 145, 80, 0.7);
+    transform: translateY(-3px);
+  }
+  
+  .secondary-btn {
+    background-color: #bdc3c7;
+    color: #2c3e50;
+    box-shadow: 0 6px 12px rgba(189, 195, 199, 0.5);
+  }
+  
+  .secondary-btn:hover {
+    background-color: #95a5a6;
+    color: #1c2833;
+    box-shadow: 0 8px 20px rgba(149, 165, 166, 0.7);
+    transform: translateY(-3px);
+  }
+  
+  .primary-btn:active,
+  .secondary-btn:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .not-found-container {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #7f8c8d;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 50px auto;
+  }
+  
+  .not-found-container h2 {
+    color: #c0392b;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  
+  .not-found-container p {
+    color: #7f8c8d;
+    margin-bottom: 25px;
+  }
+  
+  .not-found-container .btn {
+    padding: 14px 35px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(192, 57, 43, 0.6);
+    transition: all 0.3s ease;
+  }
+  
+  .not-found-container .btn:hover {
+    background-color: #e74c3c;
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.8);
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .container {
+      width: 90%;
+      padding: 20px 25px;
+    }
+  
+    .confirmation-header h1 {
+      font-size: 2.2rem;
+    }
+  
+    .ticket-info h3 {
+      font-size: 1.5rem;
+    }
+  
+    .ticket-info p {
+      font-size: 1.1rem;
+    }
+  
+    .confirmation-actions {
+      flex-direction: column;
+    }
+  
+    .btn {
+      width: 100%;
+      margin-top: 12px;
+    }
+  }
+  

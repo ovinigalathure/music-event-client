@@ -35,7 +35,7 @@ const Countdown = ({ targetDate }) => {
   }
 
   return (
-    <div className="countdown">
+    <div className="countdown-container">
       <div className="countdown-item">
         <span className="countdown-value">{addLeadingZero(timeLeft.days || 0)}</span>
         <span className="countdown-label">Days</span>
@@ -57,4 +57,3 @@ const Countdown = ({ targetDate }) => {
 }
 
 export default Countdown
-

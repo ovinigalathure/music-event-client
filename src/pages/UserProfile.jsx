@@ -30,7 +30,7 @@ const UserProfile = () => {
         </div>
       </div>
 
-      <div className="container">
+      <div className="pcontainer">
         <div className="profile-container">
           <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
             <i className="fas fa-bars"></i> Menu
@@ -60,7 +60,7 @@ const UserProfile = () => {
                 className={location.pathname === "/profile/tickets" ? "active" : ""}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <i className="fas fa-ticket-alt"></i> My Tickets
+                <i className="fas fa-ticket-alt"></i> My Bookings
               </Link>
               <Link
                 to="/profile/payment-methods"

@@ -1,44 +1,48 @@
-.countdown {
+.countdown-container {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  align-items: center;
+  gap: 30px; /* Space between each countdown unit */
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
 }
 
 .countdown-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 80px;
+  min-width: 80px; /* Ensure there's enough space for each countdown unit */
 }
 
 .countdown-value {
-  font-size: 2.5rem;
+  font-size: 3.5rem; /* Big font for the countdown numbers */
   font-weight: 700;
+  color: #333;
   line-height: 1;
-  margin-bottom: 5px;
+  margin-bottom: 5px; /* Space between value and label */
 }
 
 .countdown-label {
-  font-size: 0.9rem;
+  font-size: 1rem; /* Smaller text for labels */
   text-transform: uppercase;
   letter-spacing: 1px;
+  color: #777; /* Lighter color for the labels */
 }
 
-@media (min-width: 768px) {
-  .countdown {
-    gap: 30px;
+@media (max-width: 768px) {
+  .countdown-container {
+    gap: 15px; /* Reduce gap on smaller screens */
   }
 
   .countdown-item {
-    min-width: 100px;
+    min-width: 70px; /* Reduce minimum width */
   }
 
   .countdown-value {
-    font-size: 3.5rem;
+    font-size: 2.5rem; /* Smaller font size on mobile */
   }
 
   .countdown-label {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Smaller label font size */
   }
 }
-

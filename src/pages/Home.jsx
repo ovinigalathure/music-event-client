@@ -7,7 +7,7 @@ import Countdown from "../components/Countdown"
 import axios from "axios"
 import "./Home.css"
 
-// Define mockArtists for now
+// Define mockArtists for now (not used for event navigation)
 const mockArtists = [
   {
     id: 1,
@@ -29,68 +29,53 @@ const mockArtists = [
       youtube: "https://youtube.com/artist2"
     }
   },
-  // Add more artists as needed
-];
+]
 
 const Home = () => {
   const [featuredEvents, setFeaturedEvents] = useState([])
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [pastEvents, setPastEvents] = useState([])
   const [nextEvent, setNextEvent] = useState(null)
-  const [featuredArtists, setFeaturedArtists] = useState([]) // For artists
+  const [featuredArtists, setFeaturedArtists] = useState([])
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [subscribeMessage, setSubscribeMessage] = useState("")
 
   useEffect(() => {
-    // Fetch events from the backend API
     axios
       .get("http://localhost:8080/api/events")
       .then((response) => {
-        const events = response.data;  // Assuming the API returns an array of events
-
-        // Get current date for comparison
+        const events = response.data
         const now = new Date()
 
-        // Filter events into upcoming and past
         const upcoming = events
           .filter((event) => new Date(event.date) > now)
-          .sort((a, b) => new Date(a.date) - new Date(b.date)) // Sort by date ascending
+          .sort((a, b) => new Date(a.date) - new Date(b.date))
 
         const past = events
           .filter((event) => new Date(event.date) < now)
-          .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date descending
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
 
-        // Set next event (closest upcoming)
         setNextEvent(upcoming.length > 0 ? upcoming[0] : null)
-
-        // Set featured events (random selection)
-        const featured = events.filter(event => event.featured) // Filter featured events
-        setFeaturedEvents(featured.slice(0, 3)) // Get the first 3 featured events
-
-        // Set upcoming and past events
-        setUpcomingEvents(upcoming.slice(0, 6)) // Show up to 6 upcoming events
-        setPastEvents(past.slice(0, 3)) // Show up to 3 past events
+        const featured = events.filter(event => event.featured)
+        setFeaturedEvents(featured.slice(0, 3))
+        setUpcomingEvents(upcoming.slice(0, 6))
+        setPastEvents(past.slice(0, 3))
       })
       .catch((error) => {
         console.error("Error fetching events:", error)
       })
 
-    // Use the mock artists for now
     setFeaturedArtists(mockArtists)
   }, [])
 
   const handleSubscribe = (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false)
       setSubscribeMessage("Thank you for subscribing to our newsletter!")
       setEmail("")
-
-      // Clear message after 5 seconds
       setTimeout(() => {
         setSubscribeMessage("")
       }, 5000)
@@ -155,7 +140,9 @@ const Home = () => {
           <h2 className="section-title">Featured Events</h2>
           <div className="grid grid-3">
             {featuredEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <Link key={event.id} to={`/events/${event.id}`}>
+                <EventCard event={event} />
+              </Link>
             ))}
           </div>
           <div className="text-center mt-4">
@@ -172,7 +159,9 @@ const Home = () => {
           <h2 className="section-title">Upcoming Events</h2>
           <div className="grid grid-3">
             {upcomingEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <Link key={event.id} to={`/events/${event.id}`}>
+                <EventCard event={event} />
+              </Link>
             ))}
           </div>
           <div className="text-center mt-4">
@@ -182,35 +171,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Featured Artists */}
-      {/* <section className="section featured-artists-section">
-        <div className="container">
-          <h2 className="section-title">Featured Artists</h2>
-          <div className="grid grid-4">
-            {featuredArtists.map((artist) => (
-              <div key={artist.id} className="artist-card">
-                <div className="artist-image">
-                  <img src="/src/Assests/back 3.jpg" alt={artist.name} />
-                </div>
-                <h3>{artist.name}</h3>
-                <p>{artist.genre}</p>
-                <div className="artist-social">
-                  <a href={artist.social.spotify} target="_blank" rel="noopener noreferrer" aria-label="Spotify">
-                    <i className="fab fa-spotify"></i>
-                  </a>
-                  <a href={artist.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                    <i className="fab fa-instagram"></i>
-                  </a>
-                  <a href={artist.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                    <i className="fab fa-youtube"></i>
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* Past Events */}
       <section className="section past-events-section">
