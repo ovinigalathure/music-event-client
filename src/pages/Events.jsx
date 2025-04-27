@@ -102,8 +102,8 @@ const Events = () => {
   return (
     <div className="events-page">
       <section className="events-hero-section">
-        <div className="container">
-          <h1 className="section-title">Explore Events</h1>
+        <div className="container4">
+          <h1 className="section-title2">Explore Events</h1>
           <p className="events-intro">
             Discover and book tickets for the best music events in your area. Use the filters below to find the perfect
             event for you.
@@ -112,7 +112,7 @@ const Events = () => {
       </section>
 
       <section className="section events-filter-section">
-        <div className="container">
+        <div className="container11">
           <div className="events-filters">
             <div className="search-filter">
               <input
@@ -150,7 +150,7 @@ const Events = () => {
                   <option value="name">Name (A-Z)</option>
                 </select>
               </div>
-              <button className="btn-small" onClick={clearFilters}>
+              <button className="btn-small2" onClick={clearFilters}>
                 Clear Filters
               </button>
             </div>
@@ -182,7 +182,7 @@ const Events = () => {
       </section>
 
       <section className="section events-cta-section">
-        <div className="container">
+        <div className="container11">
           <div className="events-cta">
             <div className="cta-content">
               <h2>Can't Find What You're Looking For?</h2>

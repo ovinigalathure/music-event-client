@@ -5,8 +5,8 @@ const About = () => {
   return (
     <div className="about-page">
       <section className="about-hero-section">
-        <div className="container">
-          <h1 className="section-title">About RhythmEvents</h1>
+        <div className="container1">
+          <h1 className="section-title2">About RhythmEvents</h1>
           <p className="about-intro">
             Creating unforgettable music experiences since 2010. Learn more about our journey, mission, and the team
             behind RhythmEvents.
@@ -15,7 +15,7 @@ const About = () => {
       </section>
 
       <section className="section about-story-section">
-        <div className="container">
+        <div className="container1">
           <div className="about-story">
             <div className="about-story-content">
               <h2>Our Story</h2>
@@ -43,7 +43,7 @@ const About = () => {
       </section>
 
       <section className="section about-mission-section">
-        <div className="container">
+        <div className="container1">
           <div className="about-mission">
             <div className="about-mission-image">
               <img src="/src/Assests/back 3.jpg" alt="RhythmEvents Mission" />
@@ -90,7 +90,7 @@ const About = () => {
       </section>
 
       <section className="section about-achievements-section">
-        <div className="container">
+        <div className="container1">
           <h2 className="section-title">Our Achievements</h2>
           <div className="achievements-container">
             <div className="achievement">
@@ -117,7 +117,7 @@ const About = () => {
         <div className="container">
           <h2 className="section-title">Leadership Team</h2>
           <div className="about-team-grid">
-            <div className="about-team-member">
+            <div className="about-team-member1">
               <div className="team-member-image">
                 <img src="/src/Assests/back 3.jpg" alt="John Smith" />
               </div>
@@ -168,7 +168,7 @@ const About = () => {
       </section>
 
       <section className="section about-testimonials-section">
-        <div className="container">
+        <div className="container1">
           <h2 className="section-title">What People Say About Us</h2>
           <div className="about-testimonials">
             <div className="about-testimonial">
@@ -221,7 +221,7 @@ const About = () => {
       </section>
 
       <section className="section about-cta-section">
-        <div className="container">
+        <div className="container1">
           <div className="about-cta">
             <h2>Ready to Create Your Next Music Event?</h2>
             <p>Let our team of experienced event planners help you bring your vision to life.</p>

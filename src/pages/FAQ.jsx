@@ -70,8 +70,8 @@ const FAQ = () => {
   return (
     <div className="faq-page">
       <section className="faq-hero-section">
-        <div className="container">
-          <h1 className="section-title">Frequently Asked Questions</h1>
+        <div className="container1">
+          <h1 className="section-title2">Frequently Asked Questions</h1>
           <p className="faq-intro">
             Find answers to common questions about our events, tickets, venues, and more. If you can't find what you're
             looking for, feel free to contact us directly.
@@ -90,7 +90,7 @@ const FAQ = () => {
       </section>
 
       <section className="section faq-content-section">
-        <div className="container">
+        <div className="container1">
           <div className="faq-container">
             {filteredFAQs.length > 0 ? (
               filteredFAQs.map((faq, index) => (
@@ -118,7 +118,7 @@ const FAQ = () => {
       </section>
 
       <section className="section faq-contact-section">
-        <div className="container">
+        <div className="container1">
           <div className="faq-contact">
             <div className="faq-contact-info">
               <h2>Still Have Questions?</h2>

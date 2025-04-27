@@ -76,12 +76,12 @@ const MeetTheTeam = () => {
 
   if (loading) return <div>Loading team members...</div>
   if (error) return <div>Error: {error}</div>
-
+const UPLOADS_BASE = "http://localhost:8080/uploads/"
   return (
     <div className="meet-team-page">
       <section className="team-hero-section">
-        <div className="container">
-          <h1 className="section-title">Meet Our Team</h1>
+        <div className="container2">
+          <h1 className="section-title2">Meet Our Team</h1>
           <p className="team-intro">
             Our team of experienced event planners is dedicated to creating unforgettable music experiences. Get to know
             the people who will bring your event to life.
@@ -99,7 +99,14 @@ const MeetTheTeam = () => {
                 onClick={() => handleMemberClick(member)}
               >
                 <div className="team-member-image">
-                  <img src={member.image || member.imagePath || "/placeholder.svg"} alt={member.name} />
+                <img
+                  src={
+                    member.imagePath
+                      ? `${UPLOADS_BASE}${member.imagePath}`
+                      : "/placeholder-user.jpg"
+                  }
+                  alt={member.name}
+/>
                 </div>
                 <div className="team-member-info">
                   <h3>{member.name}</h3>

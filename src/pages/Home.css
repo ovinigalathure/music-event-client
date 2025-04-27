@@ -206,18 +206,17 @@
   background-color: var(--background-color);
 }
 
-.container {
-  width: 100%;
-  max-width: 900px;
+.container11 {
+  width: 1500px;
   margin: 0 auto;
   padding: 30px 40px;
-  background-color: hsla(0, 9%, 87%, 0.8);
   border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(10px);
-  border: 1px solid #e1e8f0;
 }
-
+.container11{
+  padding-left: 50px;
+  padding-right: 50px;
+}
 
 /* How It Works Section */
 .how-it-works-section {
@@ -477,12 +476,28 @@
 }
 
 /* Newsletter Section */
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== NEWSLETTER SECTION ========== */
 .newsletter-section {
   background-color: var(--background-color);
+  /* Animation for the whole section */
+  animation: fadeInUp 1s;
 }
 
 .newsletter-container {
-  background-color: var(--primary-color);
+  /* Modern diagonal gradient using your theme colors */
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   border-radius: var(--border-radius);
   padding: 40px;
   color: white;
@@ -490,6 +505,9 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  /* Fade-in animation */
+  animation: fadeInUp 1.2s;
+  transition: background 0.4s, color 0.4s;
 }
 
 .newsletter-content {
@@ -516,21 +534,33 @@
   padding: 15px;
   border-radius: var(--border-radius);
   margin-bottom: 15px;
+  transition: box-shadow 0.3s;
+}
+
+.newsletter-form .form-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--secondary-color);
 }
 
 .newsletter-form .btn {
   background-color: var(--secondary-color);
   color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 
 .newsletter-form .btn:hover {
   background-color: white;
   color: var(--primary-color);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
 }
 
 .subscribe-message {
   margin-top: 15px;
   font-weight: 500;
+  /* Fade-in animation for message */
+  animation: fadeInUp 1.4s;
 }
 
 /* Responsive */

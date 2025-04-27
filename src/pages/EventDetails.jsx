@@ -141,7 +141,7 @@ const EventDetails = () => {
   return (
     <div className="event-details-page">
       <div className="event-header">
-        <div className="container">
+        <div className="container11">
           <div className="event-header-content">
             <h1>{event.name}</h1>
             <div className="event-meta">
@@ -164,7 +164,7 @@ const EventDetails = () => {
         </div>
       </div>
 
-      <div className="container">
+      <div className="container11">
         <div className="event-details-content">
           <div className="event-main">
             <div className="event-gallery">

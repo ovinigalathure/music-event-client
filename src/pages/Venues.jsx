@@ -11,6 +11,8 @@ const Venues = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [error, setError] = useState(null)
 
+  const uploadsBase = "http://localhost:8080/uploads/";
+
   useEffect(() => {
     // Real API call to Spring Boot backend
     const fetchVenues = async () => {
@@ -79,8 +81,8 @@ const Venues = () => {
   return (
     <div className="venues-page">
       <section className="venues-hero-section">
-        <div className="container">
-          <h1 className="section-title">Explore Venues</h1>
+        <div className="container4">
+          <h1 className="section-title2">Explore Venues</h1>
           <p className="venues-intro">
             Discover the best music venues for your next event experience. From intimate jazz clubs to massive arenas,
             find the perfect venue.
@@ -99,13 +101,17 @@ const Venues = () => {
       </section>
 
       <section className="section venues-list-section">
-        <div className="container">
+        <div className="container11">
           {filteredVenues.length > 0 ? (
             <div className="venues-grid">
               {filteredVenues.map((venue) => (
                 <div key={venue.id} className="venue-card">
                   <div className="venue-image">
-                    <img src={venue.imageUrl || "/placeholder.svg"} alt={venue.name} />
+                    <img
+                      src={venue.imageUrl ? `${uploadsBase}${venue.imageUrl}` : "/placeholder.svg"}
+                      alt={venue.name}
+                      className="venue-img-preview"
+                    />
                     <div className="venue-capacity">
                       <i className="fas fa-users"></i> {venue.capacity.toLocaleString()} capacity
                     </div>
@@ -147,7 +153,7 @@ const Venues = () => {
       </section>
 
       <section className="section venues-cta-section">
-        <div className="container">
+        <div className="container11">
           <div className="venues-cta">
             <div className="cta-content">
               <h2>Looking for a Venue for Your Event?</h2>

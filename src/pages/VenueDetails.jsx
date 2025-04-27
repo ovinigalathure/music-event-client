@@ -13,25 +13,30 @@ const VenueDetails = () => {
   const [activeImage, setActiveImage] = useState("")
   const [activeTab, setActiveTab] = useState("about")
 
+  const uploadsBase = "http://localhost:8080/uploads/";
+
   useEffect(() => {
     // Simulate API call
-    const fetchVenue = () => {
-      setTimeout(() => {
-        const foundVenue = mockVenues.find((v) => v.id === id)
+    const fetchVenue = async () => {
+      setLoading(true)
+      try {
+        const response = await fetch(`http://localhost:8080/api/venues/${id}`)
+        const venueData = await response.json()
+        setVenue(venueData)
+        setActiveImage(venueData.imageUrl ? `${uploadsBase}${venueData.imageUrl}` : "/placeholder.svg")
 
-        if (foundVenue) {
-          setVenue(foundVenue)
-          setActiveImage(foundVenue.image)
-
-          // Get upcoming events at this venue
-          if (foundVenue.upcoming_events && foundVenue.upcoming_events.length > 0) {
-            const events = mockEvents.filter((event) => foundVenue.upcoming_events.includes(event.id))
-            setUpcomingEvents(events)
-          }
+        // Get upcoming events for this venue
+        if (venueData.upcoming_events && venueData.upcoming_events.length > 0) {
+          const eventsResponse = await fetch(`http://localhost:8080/api/events?ids=${venueData.upcoming_events.join(",")}`)
+          const eventsData = await eventsResponse.json()
+          setUpcomingEvents(eventsData)
         }
-
+      } catch (error) {
+        console.error("Error fetching venue details:", error)
+        setVenue(null)
+      } finally {
         setLoading(false)
-      }, 800)
+      }
     }
 
     fetchVenue()
@@ -69,20 +74,23 @@ const VenueDetails = () => {
     )
   }
 
+  // Ensure gallery is an array, or fallback to an empty array if undefined or not an array
+  const gallery = Array.isArray(venue.gallery) ? venue.gallery : [];
+
   return (
     <div className="venue-details-page">
       <div className="venue-header">
-        <div className="container">
+        <div className="container1">
           <div className="venue-header-content">
             <h1>{venue.name}</h1>
             <p className="venue-location">
-              <i className="fas fa-map-marker-alt"></i> {venue.location}
+              <i className="fas fa-map-marker-alt"></i> {venue.city}, {venue.state}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="container">
+      <div className="container11">
         <div className="venue-details-content">
           <div className="venue-main">
             <div className="venue-gallery">
@@ -90,13 +98,13 @@ const VenueDetails = () => {
                 <img src={activeImage || "/placeholder.svg"} alt={venue.name} />
               </div>
               <div className="venue-thumbnails">
-                {[venue.image, ...venue.gallery].map((image, index) => (
+                {[venue.imageUrl, ...gallery].map((image, index) => (
                   <div
                     key={index}
                     className={`venue-thumbnail ${activeImage === image ? "active" : ""}`}
-                    onClick={() => handleImageClick(image)}
+                    onClick={() => handleImageClick(image ? `${uploadsBase}${image}` : "/placeholder.svg")}
                   >
-                    <img src={image || "/placeholder.svg"} alt={`${venue.name} - ${index}`} />
+                    <img src={image ? `${uploadsBase}${image}` : "/placeholder.svg"} alt={`${venue.name} - ${index}`} />
                   </div>
                 ))}
               </div>
@@ -137,7 +145,7 @@ const VenueDetails = () => {
                     <div className="venue-location-info">
                       <h3>Location</h3>
                       <p>
-                        <i className="fas fa-map-marker-alt"></i> {venue.location}
+                        <i className="fas fa-map-marker-alt"></i> {venue.city}, {venue.state}
                       </p>
                       <div className="venue-map">
                         <img src="/placeholder.svg?height=300&width=600" alt="Venue Map" />
@@ -272,38 +280,9 @@ const VenueDetails = () => {
         </div>
       </div>
 
-      <section className="section similar-venues-section">
-        <div className="container">
-          <h2 className="section-title">Similar Venues You Might Like</h2>
-          <div className="similar-venues">
-            {mockVenues
-              .filter((v) => v.id !== venue.id)
-              .slice(0, 3)
-              .map((similarVenue) => (
-                <div key={similarVenue.id} className="similar-venue-card">
-                  <div className="similar-venue-image">
-                    <img src={similarVenue.image || "/placeholder.svg"} alt={similarVenue.name} />
-                  </div>
-                  <div className="similar-venue-content">
-                    <h3>{similarVenue.name}</h3>
-                    <p className="similar-venue-location">
-                      <i className="fas fa-map-marker-alt"></i> {similarVenue.location}
-                    </p>
-                    <p className="similar-venue-capacity">
-                      <i className="fas fa-users"></i> {similarVenue.capacity.toLocaleString()} capacity
-                    </p>
-                    <Link to={`/venues/${similarVenue.id}`} className="btn-small">
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      </section>
+     
     </div>
   )
 }
 
 export default VenueDetails
-

@@ -2,11 +2,39 @@
   padding-top: 80px;
 }
 
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ========== HERO SECTION ========== */
 .events-hero-section {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/placeholder.svg?height=800&width=1200")
     no-repeat center center / cover;
-    /* background-color: white; */
-  
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   color: white;
   padding: 120px 0 60px;
@@ -15,26 +43,52 @@
   height: 800px;
   margin-top: -100px;
 
+  /* Animation */
+  animation: fadeInUp 1s;
 }
 
+.section-title2{
+  font-size: 4.2rem;
+  margin-top: 80px;
+}
+
+/* ========== INTRO SECTION ========== */
 .events-intro {
   max-width: 800px;
   margin: 0 auto;
   font-size: 1.2rem;
   line-height: 1.6;
+
+  /* Animation */
+  animation: fadeInUp 1.2s;
 }
 
+/* ========== FILTER SECTION ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/* ========== FILTER SECTION ========== */
 .events-filter-section {
-  background-color: var(--background-color);
+  background: linear-gradient(90deg, var(--background-color) 60%, var(--card-bg) 100%);
+  animation: fadeInUp 1s;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  padding: 32px 0 24px 0;
+  transition: background 0.4s;
+  width: 500px;
 }
 
 .events-filters {
   margin-bottom: 30px;
+  animation: fadeInUp 1.2s;
 }
 
 .search-filter {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: -2px;
+  width: 800px;
 }
 
 .search-filter input {
@@ -42,8 +96,20 @@
   padding: 15px 20px;
   padding-right: 50px;
   border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   font-size: 1rem;
+  background: linear-gradient(90deg, var(--card-bg) 80%, var(--background-color) 100%);
+  transition: 
+    border-color 0.3s,
+    box-shadow 0.3s,
+    background 0.4s;
+}
+
+.search-filter input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color);
+  background: linear-gradient(90deg, var(--primary-color) 10%, var(--card-bg) 100%);
+  outline: none;
 }
 
 .search-filter i {
@@ -52,12 +118,18 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-light);
+  transition: color 0.3s;
+}
+
+.search-filter input:focus + i {
+  color: var(--primary-color);
 }
 
 .filter-controls {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  animation: fadeInUp 1.3s;
 }
 
 .filter-group {
@@ -68,18 +140,51 @@
 
 .filter-group label {
   font-weight: 500;
+  color: var(--primary-color);
+  transition: color 0.3s;
 }
 
 .results-count {
   margin-bottom: 20px;
   font-weight: 500;
+  color: var(--secondary-color);
+  animation: fadeInUp 1.4s;
 }
 
+.btn-small {
+  padding: 10px 20px;
+  background-color: #5f27cd;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.btn-small2 {
+  padding: 8px 15px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  width: 150px;
+  height: 50px;
+}
+
+
+/* ========== NO EVENTS FOUND ========== */
 .no-events-found {
   text-align: center;
   padding: 60px 0;
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
+
+  /* Animation */
+  animation: bounceIn 0.8s;
 }
 
 .no-events-found i {
@@ -98,40 +203,88 @@
   margin-bottom: 20px;
 }
 
-.events-cta-section {
-  background-color: var(--card-bg);
+/* ========== EVENT CARD HOVER ANIMATION ========== */
+/* If you have event cards, add this class to them */
+.event-card {
+  transition: transform 0.3s cubic-bezier(.25,.8,.25,1), box-shadow 0.3s;
 }
 
+.event-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+
+/* ========== CTA SECTION ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/* ========== EVENTS CTA SECTION ========== */
+.events-cta-section {
+  background-color: var(--card-bg);
+  /* Optional: fade in the section itself */
+  animation: fadeInUp 1s;
+}
+
+/* ========== EVENTS CTA CONTAINER ========== */
 .events-cta {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background-color: var(--primary-color);
+  /* Gradient background for more visual interest */
+  background: linear-gradient(90deg, var(--primary-color) 60%, var(--secondary-color) 100%);
   color: white;
   border-radius: var(--border-radius);
   padding: 40px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  animation: fadeInUp 1.3s;
+  transition: background 0.5s, box-shadow 0.3s;
+}
+
+.events-cta:hover {
+  /* Subtle effect on hover for the whole CTA block */
+  box-shadow: 0 12px 32px rgba(0,0,0,0.13);
+  background: linear-gradient(90deg, var(--secondary-color) 40%, var(--primary-color) 100%);
 }
 
 .cta-content {
   margin-bottom: 20px;
+  animation: fadeInUp 1.5s;
 }
 
 .cta-content h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 10px;
+  letter-spacing: 1px;
+  transition: color 0.3s;
 }
 
+/* ========== BUTTON HOVER ANIMATION ========== */
 .events-cta .btn {
   background-color: white;
   color: var(--primary-color);
+  font-weight: 700;
+  border-radius: 30px;
+  padding: 12px 32px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transition: 
+    background 0.3s, 
+    color 0.3s, 
+    transform 0.2s, 
+    box-shadow 0.2s;
 }
 
 .events-cta .btn:hover {
-  background-color: var(--secondary-color);
+  background: linear-gradient(90deg, var(--secondary-color) 60%, var(--primary-color) 100%);
   color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.14);
 }
 
+/* ========== RESPONSIVE ========== */
 @media (min-width: 768px) {
   .filter-controls {
     flex-direction: row;
@@ -153,4 +306,3 @@
     margin-bottom: 0;
   }
 }
-

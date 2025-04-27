@@ -70,8 +70,8 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <section className="contact-hero-section">
-        <div className="container">
-          <h1 className="section-title">Contact Us</h1>
+        <div className="container1">
+          <h1 className="section-title2">Contact Us</h1>
           <p className="contact-intro">
             Have questions about our events or services? Want to organize your own music event? Get in touch with our
             team and we'll be happy to help.
@@ -80,7 +80,7 @@ const Contact = () => {
       </section>
 
       <section className="section contact-info-section">
-        <div className="container">
+        <div className="container1">
           <div className="contact-info-grid">
             <div className="contact-info-card">
               <i className="fas fa-map-marker-alt"></i>
@@ -111,7 +111,7 @@ const Contact = () => {
       </section>
 
       <section className="section contact-form-section">
-        <div className="container">
+        <div className="container1">
           <div className="contact-form-container">
             <div className="contact-form-content">
               <h2>Send Us a Message</h2>
@@ -250,7 +250,7 @@ const Contact = () => {
       </section>
 
       <section className="section contact-map-section">
-        <div className="container">
+        <div className="container1">
           <h2 className="section-title">Find Us</h2>
           <div className="contact-map">
             <img src="/placeholder.svg?height=400&width=1200" alt="Map" />
@@ -259,7 +259,7 @@ const Contact = () => {
       </section>
 
       <section className="section contact-faq-section">
-        <div className="container">
+        <div className="container1">
           <h2 className="section-title">Frequently Asked Questions</h2>
           <div className="contact-faq-grid">
             <div className="faq-item">

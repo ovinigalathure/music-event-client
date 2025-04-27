@@ -167,10 +167,7 @@ const MyTickets = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="ticket-qr">
-                    <img src={ticket.qrCode || "/placeholder.svg"} alt="Ticket QR Code" />
-                    <p>Scan at the event</p>
-                  </div>
+                  
                 </div>
               )
             })
@@ -227,10 +224,7 @@ const MyTickets = () => {
                     </button>
                   </div>
                 </div>
-                <div className="ticket-qr">
-                  <img src={ticket.qrCode || "/placeholder.svg"} alt="Ticket QR Code" />
-                  <p>Event completed</p>
-                </div>
+                
               </div>
             )
           })

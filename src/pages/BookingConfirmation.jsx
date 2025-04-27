@@ -83,7 +83,7 @@ const BookingConfirmation = () => {
 
           <div className="confirmation-actions">
             <button className="btn primary-btn">
-              <Link to="/my-bookings">View My Bookings</Link>
+              <Link to="/profile/tickets">View My Bookings</Link>
             </button>
             <button className="btn secondary-btn">
               <Link to="/events">Browse More Events</Link>

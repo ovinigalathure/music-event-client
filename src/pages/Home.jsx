@@ -171,7 +171,7 @@ const Home = () => {
 
       {/* Featured Events */}
       <section className="section featured-events-section">
-        <div className="container">
+        <div className="container11">
           <h2 className="section-title">Featured Events</h2>
           <div className="grid grid-3">
             {featuredEvents.map((event) => (
@@ -188,7 +188,7 @@ const Home = () => {
 
       {/* Upcoming Events */}
       <section className="section upcoming-events-section">
-        <div className="container">
+        <div className="container11">
           <h2 className="section-title">Upcoming Events</h2>
           <div className="grid grid-3">
             {upcomingEvents.map((event) => (
@@ -205,7 +205,7 @@ const Home = () => {
 
       {/* Past Events */}
       <section className="section past-events-section">
-        <div className="container">
+        <div className="container11">
           <h2 className="section-title">Past Events</h2>
           <div className="grid grid-3">
             {pastEvents.map((event) => (
@@ -248,7 +248,7 @@ const Home = () => {
 
       {/* Newsletter */}
       <section className="section newsletter-section">
-        <div className="container">
+        <div className="container11">
           <div className="newsletter-container">
             <div className="newsletter-content">
               <h2>Stay Updated</h2>
