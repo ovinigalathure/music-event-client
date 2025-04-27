@@ -5,9 +5,10 @@ import { Link } from "react-router-dom"
 import EventCard from "../components/EventCard"
 import Countdown from "../components/Countdown"
 import axios from "axios"
+import { useAuth } from "../context/AuthContext" // Adjust path if needed
 import "./Home.css"
 
-// Define mockArtists for now (not used for event navigation)
+// Mock artists (if needed)
 const mockArtists = [
   {
     id: 1,
@@ -41,6 +42,8 @@ const Home = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [subscribeMessage, setSubscribeMessage] = useState("")
 
+  const { user } = useAuth() // Get user from AuthContext
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/events")
@@ -69,17 +72,47 @@ const Home = () => {
     setFeaturedArtists(mockArtists)
   }, [])
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault()
+    setSubscribeMessage("")
+
+    if (!user) {
+      setSubscribeMessage("You must be logged in to subscribe.")
+      return
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubscribeMessage("Please enter a valid email address.")
+      return
+    }
+
     setIsSubmitting(true)
-    setTimeout(() => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/subscriptions",
+        {
+          userId: user.id,
+          email: email
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      if (response.status === 201) {
+        setSubscribeMessage("Thank you for subscribing to our newsletter!")
+        setEmail("")
+      }
+    } catch (error) {
+      setSubscribeMessage(
+        error.response?.data?.error ||
+        "Failed to subscribe. Please try again later."
+      )
+    } finally {
       setIsSubmitting(false)
-      setSubscribeMessage("Thank you for subscribing to our newsletter!")
-      setEmail("")
-      setTimeout(() => {
-        setSubscribeMessage("")
-      }, 5000)
-    }, 1500)
+      setTimeout(() => setSubscribeMessage(""), 5000)
+    }
   }
 
   return (
@@ -101,7 +134,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-    
+
       {/* Next Event Countdown */}
       {nextEvent && (
         <section className="countdown-section">
@@ -222,22 +255,38 @@ const Home = () => {
                 Subscribe to our newsletter to get the latest updates on upcoming events, exclusive offers, and more!
               </p>
             </div>
-            <form className="newsletter-form" onSubmit={handleSubscribe}>
-              <div className="form-group">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="form-input"
-                />
-                <button type="submit" className="btn" disabled={isSubmitting}>
-                  {isSubmitting ? "Subscribing..." : "Subscribe"}
-                </button>
+            {user ? (
+              <form className="newsletter-form" onSubmit={handleSubscribe}>
+                <div className="form-group">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="form-input"
+                  />
+                  <button type="submit" className="btn" disabled={isSubmitting || !email}>
+                    {isSubmitting ? "Subscribing..." : "Subscribe"}
+                  </button>
+                </div>
+                {subscribeMessage && (
+                  <p
+                    className={`subscribe-message ${
+                      subscribeMessage.includes("Thank") ? "success" : "error"
+                    }`}
+                  >
+                    {subscribeMessage}
+                  </p>
+                )}
+              </form>
+            ) : (
+              <div className="auth-required-message">
+                <p>
+                  Please <Link to="/login">login</Link> to subscribe to our newsletter
+                </p>
               </div>
-              {subscribeMessage && <p className="subscribe-message">{subscribeMessage}</p>}
-            </form>
+            )}
           </div>
         </div>
       </section>
